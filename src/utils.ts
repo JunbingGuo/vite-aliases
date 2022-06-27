@@ -1,6 +1,7 @@
 import { MODULE_NAME } from './constants';
 import consola from 'consola';
-import fs from 'fs/promises';
+// import fs from 'fs/promises';
+import fs from 'fs';
 import { resolve, basename } from 'path';
 import { parse, stringify } from 'comment-json';
 import type { Process } from './types';
@@ -96,7 +97,7 @@ export function abort(message: any) {
 
 export async function readJSON(path: string) {
 	try {
-		const file = (await fs.readFile(path, 'utf-8')).toString();
+		const file = (await fs.promises.readFile(path, 'utf-8')).toString();
 		logger.success('Config successfully read!');
 		return parse(file);
 	} catch(error) {
@@ -113,7 +114,7 @@ export async function writeJSON(path: string, data: any, process: Process) {
 	const state = (process === 'add' || process === 'normal') ? 'created' : 'updated';
 
 	try {
-		await fs.writeFile(path, stringify(data, null, 4));
+		await fs.promises.writeFile(path, stringify(data, null, 4));
 		logger.success(`File: ${name} successfully ${state}`);
 	} catch(error) {
 		logger.error(`File: ${name} could not be ${state}.`);

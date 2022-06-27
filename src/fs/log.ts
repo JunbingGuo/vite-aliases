@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
+// import { mkdir } from 'fs/promises';
+import fs from 'fs';
 
 import { abort, slash, writeJSON } from '../utils';
 import type { Generator } from '../generator';
@@ -24,7 +25,7 @@ export async function writeLog(gen: Generator, process: Process = 'normal') {
 
 	try {
 		if(!existsSync(folder)) {
-			await mkdir(folder, { recursive: true });
+			await fs.promises.mkdir(folder, { recursive: true });
 		}
 		await writeJSON(file, data, process);
 	} catch(error) {
